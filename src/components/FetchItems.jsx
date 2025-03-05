@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { itemsAction } from "../store/itemsSlice";
 import { fetchAction } from "../store/fetchStatusSlice";
-import { items } from "../../public/items";
+import { items } from "../store/items";
 import LoadingSpinner from "./LoadingSpinner";
 const FetchItems = () => {
   const fetchStatus = useSelector((store) => store.fetchStatus);
