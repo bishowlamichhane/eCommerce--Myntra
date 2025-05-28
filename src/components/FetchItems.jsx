@@ -1,9 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { itemsAction } from "../store/itemsSlice";
 import { fetchAction } from "../store/fetchStatusSlice";
-import { items } from "../store/items";
+import { collection, getDocs } from "firebase/firestore";
+
 import LoadingSpinner from "./LoadingSpinner";
+import { db } from "../firebase";
+
 const FetchItems = () => {
   const fetchStatus = useSelector((store) => store.fetchStatus);
   const dispatch = useDispatch();
@@ -15,11 +18,14 @@ const FetchItems = () => {
       try {
         dispatch(fetchAction.markFetchingStarted());
 
-        // You could fetch dynamically here instead of static data:
-        // const response = await fetch('your-api-url');
-        // const data = await response.json();
+        const itemsRef = collection(db, "items");
+        const querySnapShot = await getDocs(itemsRef);
+        const itemsData = querySnapShot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
 
-        dispatch(itemsAction.addInitialItems(items));
+        dispatch(itemsAction.addInitialItems(itemsData));
         dispatch(fetchAction.markFetchDone());
       } catch (error) {
         console.error("Failed to fetch items:", error);
@@ -29,7 +35,7 @@ const FetchItems = () => {
     };
 
     fetchData();
-  }, [fetchStatus, dispatch]);
+  }, [fetchStatus.fetchDone, dispatch]);
 
   if (fetchStatus.isFetching) {
     return (

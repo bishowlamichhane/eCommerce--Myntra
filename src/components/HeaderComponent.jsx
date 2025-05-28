@@ -18,6 +18,7 @@ const HeaderComponent = () => {
           />
         </Link>
       </div>
+      
       <nav className="nav_bar">
         <a href="#">Men</a>
         <a href="#">Women</a>

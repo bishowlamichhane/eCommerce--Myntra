@@ -10,7 +10,6 @@ const App = () => {
 
   return (
     <div>
-      {" "}
       <HeaderComponent />
       <FetchItems />
       {fetchStatus.currentlyFetching ? <LoadingSpinner /> : <Outlet />}

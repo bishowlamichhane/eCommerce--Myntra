@@ -12,6 +12,7 @@ header {
     align-items: center;
     border-bottom: 1px solid #b6b1b1;
 }
+
 .myntra_home {
     height: 45px;
 }
@@ -154,10 +155,14 @@ header {
     width: 80%;
     margin: 40px 10%;
 }
+
 .item-container {
     width: 250px;
     margin: 10px;
 }
+
+
+
 .item-image {
     width: 100%;
 }
