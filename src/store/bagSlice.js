@@ -9,7 +9,7 @@ const bagSlice=createSlice({
         addToBag:(state,action)=>{
             state.push(action.payload)
           
-        },
+        }, 
         removeFromBag:(state,action)=>{
            return state.filter((bagItem)=> bagItem.itemId !== action.payload)
         }

@@ -1,4 +1,5 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { bagAction } from "../store/bagSlice";
@@ -9,7 +10,25 @@ const ItemPage = () => {
   const foundItem = items.filter((item) => item.id === id)[0];
   const dispatch = useDispatch();
   const bagItems = useSelector((store) => store.bag);
-  const elementFound = bagItems.indexOf(id) >= 0;
+
+  const elementFound = bagItems.some((bagItem) => bagItem.itemId === id);
+  const [quantity, setQuantity] = useState(() => {
+    if (elementFound) {
+      const itemInBag = bagItems.find((bagItem) => bagItem.itemId === id);
+      return itemInBag ? itemInBag.quantity : 1;
+    } else {
+      return 1;
+    }
+  });
+
+  useEffect(() => {
+    if (elementFound) {
+      const itemInBag = bagItems.find((bagItem) => bagItem.itemId === id);
+      setQuantity(itemInBag ? itemInBag.quantity : 1);
+    } else {
+      setQuantity(1);
+    }
+  }, [elementFound, bagItems, id]);
 
   console.log(foundItem);
   if (!foundItem) {
@@ -17,7 +36,8 @@ const ItemPage = () => {
   }
 
   const handleAdded = (itemId) => {
-    dispatch(bagAction.addToBag(itemId));
+    const itemToAdd = { itemId, quantity };
+    dispatch(bagAction.addToBag(itemToAdd));
   };
 
   const handleRemoved = (itemId) => {
@@ -85,21 +105,51 @@ const ItemPage = () => {
             <p>Delivery by {foundItem.delivery_date}</p>
           </div>
 
-          {elementFound ? (
-            <button
-              className="btn-remove-bag btn btn-danger"
-              onClick={() => handleRemoved(foundItem.id)}
-            >
-              Remove from Bag
-            </button>
-          ) : (
-            <button
-              className="btn-add-bag btn btn-success"
-              onClick={() => handleAdded(foundItem.id)}
-            >
-              Add to Bag
-            </button>
-          )}
+          <div className="action-area">
+            {elementFound ? (
+              <button
+                className="btn-remove-bag btn btn-danger"
+                onClick={() => handleRemoved(id)}
+              >
+                Remove from Bag
+              </button>
+            ) : (
+              <>
+                <button
+                  className="btn-add-bag btn btn-success"
+                  onClick={() => {
+                    handleAdded(id);
+                  }}
+                >
+                  Add to Bag
+                </button>
+                <div className="quantity-controls-container">
+                  <button
+                    className="quantity-btn quantity-btn-left"
+                    onClick={() => {
+                      if (quantity > 1) {
+                        setQuantity((prev) => prev - 1);
+                      }
+                    }}
+                  >
+                    -
+                  </button>
+                  <input
+                    className="quantity-input"
+                    value={quantity}
+                    type="number"
+                    readOnly
+                  />
+                  <button
+                    className="quantity-btn quantity-btn-right"
+                    onClick={() => setQuantity((prev) => prev + 1)}
+                  >
+                    +
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>
