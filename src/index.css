@@ -11,6 +11,10 @@ header {
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #b6b1b1;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .myntra_home {
@@ -52,12 +56,12 @@ header {
     width: 30%;
     display: flex;
     align-items: center;
+    position: relative;
 }
 .search_icon {
     box-sizing: content-box;
     height: 20px;
     padding: 10px;
-
     background-color: #f5f5f6;
     color: #282c3f;
     font-weight: 300;
@@ -69,7 +73,65 @@ header {
     flex-grow: 1;
     height: 40px;
     border: 0;
+
     border-radius: 0 4px 4px 0;
+}
+.search_input:focus{
+    outline: none;
+
+}
+
+.search_results_container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    border: 1px solid #f5f5f6;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 4px 16px 0 rgba(0,0,0,.2);
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.search_result_item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #f5f5f6;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.search_result_item:hover {
+    background-color: #f5f5f6;
+}
+
+.search_result_image {
+    width: 40px;
+    height: 40px;
+    object-position: top;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.search_result_details {
+    flex: 1;
+}
+
+.search_result_name {
+    font-size: 14px;
+    color: #282c3f;
+    margin: 0;
+    margin-bottom: 4px;
+}
+
+.search_result_price {
+    font-size: 12px;
+    color: #03a685;
+    margin: 0;
+    font-weight: 500;
 }
 
 .action_bar {
@@ -119,11 +181,14 @@ header {
     background: #FAFBFC;
     display: flex;
     justify-content: space-evenly;
+    flex-wrap: wrap;
 }
 
 .footer_column {
     display: flex;
     flex-direction: column;
+    min-width: 200px;
+    margin: 10px;
 }
 
 .footer_column h3 {
@@ -276,6 +341,7 @@ a.action_container:link {
   .bag-page {
     width: 75%;
     margin-left: 12.5%;
+    padding: 20px 0;
   }
   
   .bag-summary {
@@ -401,4 +467,265 @@ a.action_container:link {
   }
   .spinner{
     margin: 100px 0px;
+}
+
+.item-page-container
+{ 
+    
+}
+
+/* Responsive styles */
+@media screen and (max-width: 1024px) {
+  .items-container {
+    width: 90%;
+    margin: 40px 5%;
+  }
+
+  .item-container {
+    width: 220px;
+  }
+
+  .bag-page {
+    width: 90%;
+    margin-left: 5%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  header {
+    height: auto;
+    flex-direction: column;
+    padding: 10px 0;
+  }
+
+  .nav_bar {
+    min-width: 100%;
+    padding: 10px 0;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .nav_bar a {
+    padding: 10px 15px;
+  }
+
+  .search_bar {
+    width: 90%;
+    margin: 10px 0;
+  }
+
+  .action_bar {
+    width: 100%;
+    justify-content: space-around;
+    padding: 10px 0;
+  }
+
+  .item-page-container {
+    padding: 10px;
+  }
+
+  .item-page-container > div {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .item-page-container > div > div {
+    width: 100%;
+  }
+
+  .bag-items-container {
+    width: 100%;
+    padding-right: 0;
+    border-right: none;
+  }
+
+  .bag-summary {
+    width: 100%;
+    padding: 20px 0;
+  }
+
+  .footer_container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 30px;
+  }
+
+  .footer_column {
+    width: 100%;
+    align-items: center;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .item-container {
+    width: 100%;
+  }
+
+  .nav_bar a {
+    font-size: 12px;
+    padding: 8px 12px;
+  }
+
+  .action_container {
+    font-size: 12px;
+  }
+
+  .bag-item-container {
+    padding: 8px;
+  }
+
+  .item-left-part {
+    width: 80px;
+    height: 120px;
+  }
+
+  .item-right-part {
+    margin-left: 80px;
+    min-height: 120px;
+  }
+}
+
+/* Item page specific styles */
+.item-page-container {
+  padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.item-page-container > div {
+  display: flex;
+  gap: 40px;
+}
+
+.item-page-container > div > div:first-child {
+  flex: 1;
+  height: 400px;
+  overflow: hidden;
+}
+
+.item-page-container > div > div:last-child {
+  flex: 1;
+}
+
+.item-page-container img {
+  width: 100%;
+  height: 400px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+
+/* Styles for the main item display */
+.items-container,
+.category-items {
+  width: 80%;
+}
+
+/* Item button and quantity controls area */
+.action-area {
+  margin-top: 8px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.btn-add-bag,
+.btn-remove-bag {
+  font-size: 18px;
+  width: 100%;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
+  text-align: center;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.btn-add-bag {
+  background-color: #008000;
+  color: white;
+}
+
+.btn-add-bag:hover {
+  background-color: #006400;
+}
+
+.btn-remove-bag {
+    background-color: red;
+    color: white;
+}
+
+.btn-remove-bag:hover {
+    background-color: darkred;
+}
+
+/* Container for quantity controls when item is NOT in bag */
+.quantity-controls-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+
+  border-radius: 4px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.quantity-btn {
+  width: 40px;
+  height: 36px;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  color: #3e4152;
+  border: none;
+  transition: background-color 0.2s ease;
+}
+
+.quantity-btn-left {
+  border-right: 1px solid #eaeaec;
+}
+
+.quantity-btn-right {
+  border-left: 1px solid #eaeaec;
+}
+
+.quantity-btn:hover {
+  background-color: #f0f0f0;
+}
+
+.quantity-input {
+  /* Allow input to take available space */
+  height: 36px;
+  border: none; /* Remove input borders */
+  text-align: center;
+  font-size: 16px;
+  color: #3e4152;
+  -moz-appearance: textfield;
+  padding: 0 5px;
+  width: 40px; /* Set a fixed width */
+  flex-grow: 0; /* Prevent it from growing */
+}
+
+.quantity-input::-webkit-outer-spin-button,
+.quantity-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Remove or override incorrect styles added previously */
+.action-button-container,
+.action-button-container button,
+.added-to-bag-controls,
+.quantity-controls button,
+.quantity-controls input {
+    /* Ensure these styles don't interfere */
+    /* It's safer to define the correct styles and let them override */
 }

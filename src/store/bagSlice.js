@@ -1,4 +1,3 @@
-
 import { createSlice } from "@reduxjs/toolkit";
 //bag slice 
 
@@ -12,7 +11,7 @@ const bagSlice=createSlice({
           
         },
         removeFromBag:(state,action)=>{
-           return state.filter((itemId)=>itemId !=action.payload)
+           return state.filter((bagItem)=> bagItem.itemId !== action.payload)
         }
     }
 });
