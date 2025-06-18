@@ -1,0 +1,11 @@
+.header {
+  width: 100vw;
+  height: 100px;
+  background-color: white;
+  color: white;
+  padding: 32px 45px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+}

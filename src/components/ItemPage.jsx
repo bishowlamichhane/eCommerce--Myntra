@@ -1,54 +1,95 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { bagAction } from "../store/bagSlice";
+import { useAuth } from "../context/useAuth";
+import { addToUserBag, removeFromUserBag } from "../firebase/firebase";
 
 const ItemPage = () => {
   const { id } = useParams();
-  const items = useSelector((store) => store.items);
+  const navigate = useNavigate();
+  const items = useSelector((store) => store.items) || [];
   const foundItem = items.filter((item) => item.id === id)[0];
   const dispatch = useDispatch();
-  const bagItems = useSelector((store) => store.bag);
+  const bagItems = useSelector((store) => store.bag) || [];
+  const { currentUser } = useAuth();
 
-  const elementFound = bagItems.some((bagItem) => bagItem.itemId === id);
-  const [quantity, setQuantity] = useState(() => {
-    if (elementFound) {
-      const itemInBag = bagItems.find((bagItem) => bagItem.itemId === id);
-      return itemInBag ? itemInBag.quantity : 1;
-    } else {
-      return 1;
-    }
-  });
+  console.log('ItemPage Render - bagItems:', bagItems, 'ID:', id); // Log 1
+
+  // Use a state variable to explicitly manage whether the item is in the bag
+  const [isInBag, setIsInBag] = useState(false); 
+  const [quantity, setQuantity] = useState(1); // Default to 1, updated by useEffect
 
   useEffect(() => {
-    if (elementFound) {
-      const itemInBag = bagItems.find((bagItem) => bagItem.itemId === id);
-      setQuantity(itemInBag ? itemInBag.quantity : 1);
+    const itemInBag = bagItems.find((bagItem) => bagItem.itemId === id);
+    setIsInBag(itemInBag !== undefined);
+    if (itemInBag) {
+      setQuantity(itemInBag.quantity);
     } else {
-      setQuantity(1);
+      setQuantity(1); // Reset quantity if item is removed from bag or not found
     }
-  }, [elementFound, bagItems, id]);
+    console.log('useEffect - bagItems changed. isInBag:', isInBag, 'Quantity:', itemInBag?.quantity || 1); // Log 2
+  }, [bagItems, id]);
 
   console.log(foundItem);
   if (!foundItem) {
     return <div>Item not found</div>;
   }
 
-  const handleAdded = (itemId) => {
-    const itemToAdd = { itemId, quantity };
-    dispatch(bagAction.addToBag(itemToAdd));
+  const handleAdded = async (itemId, updatedQuantity) => {
+    if (!currentUser) {
+      navigate('/login');
+      return;
+    }
+
+    try {
+      const finalQuantity = updatedQuantity !== undefined ? updatedQuantity : quantity;
+      const productData = {
+        productId: itemId,
+        companyId: foundItem.company || 'default',
+        quantity: finalQuantity,
+        priceAtPurchase: foundItem.current_price || 0,
+        itemDetails: {
+          name: foundItem.item_name || '',
+          image: foundItem.image || '',
+          company: foundItem.company || '',
+          current_price: foundItem.current_price || 0,
+          original_price: foundItem.original_price || 0,
+          discount_percentage: foundItem.discount_percentage || 0
+        }
+      };
+
+      // Add to Firestore
+      await addToUserBag(currentUser.uid, productData);
+
+      // Update Redux store
+      const itemToAdd = { itemId, quantity: finalQuantity };
+      dispatch(bagAction.addToBag(itemToAdd));
+      console.log('handleAdded - Dispatched addToBag:', itemToAdd); // Log 3
+    } catch (error) {
+      console.error("Error adding item to bag:", error);
+      // You might want to show an error message to the user here
+    }
   };
 
-  const handleRemoved = (itemId) => {
-    dispatch(bagAction.removeFromBag(itemId));
+  const handleRemoved = async (itemId) => {
+    if (!currentUser) return;
+
+    try {
+      // Remove from Firestore
+      await removeFromUserBag(currentUser.uid, itemId);
+
+      // Update Redux store
+      dispatch(bagAction.removeFromBag(itemId));
+    } catch (error) {
+      console.error("Error removing item from bag:", error);
+      // You might want to show an error message to the user here
+    }
   };
 
   return (
-    <div
-      className="item-page-container"
-      style={{ padding: "20px", maxWidth: "1000px", margin: "0 auto" }}
-    >
+    <div className="item-page-container" style={{ padding: "20px", maxWidth: "1000px", margin: "0 auto" }}>
       <div style={{ display: "flex", gap: "40px" }}>
         <div style={{ flex: "1", height: "400px", overflow: "hidden" }}>
           <img
@@ -106,7 +147,7 @@ const ItemPage = () => {
           </div>
 
           <div className="action-area">
-            {elementFound ? (
+            {isInBag ? (
               <button
                 className="btn-remove-bag btn btn-danger"
                 onClick={() => handleRemoved(id)}
@@ -128,7 +169,8 @@ const ItemPage = () => {
                     className="quantity-btn quantity-btn-left"
                     onClick={() => {
                       if (quantity > 1) {
-                        setQuantity((prev) => prev - 1);
+                        const newQuantity = quantity - 1;
+                        handleAdded(id, newQuantity);
                       }
                     }}
                   >
@@ -142,7 +184,10 @@ const ItemPage = () => {
                   />
                   <button
                     className="quantity-btn quantity-btn-right"
-                    onClick={() => setQuantity((prev) => prev + 1)}
+                    onClick={() => {
+                      const newQuantity = quantity + 1;
+                      handleAdded(id, newQuantity);
+                    }}
                   >
                     +
                   </button>

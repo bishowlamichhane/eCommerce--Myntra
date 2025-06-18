@@ -10,6 +10,10 @@ import { Provider } from "react-redux";
 import myntraStore from "./store/index.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ItemPage from "./components/ItemPage.jsx";
+import AddItem from "./components/AddItem.jsx";
+import Login from "./components/Login.jsx";
+import SignUp from "./components/SignUp.jsx";
+import { AuthProvider } from "./context/useAuth.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -20,6 +24,15 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/signup",
+        element: <SignUp />,
+      },
+
+      {
         path: "/bag",
         element: <Bag />,
       },
@@ -29,12 +42,18 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "/addItem",
+    element: <AddItem />,
+  },
 ]);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={myntraStore}>
-      <RouterProvider router={router} />
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
     </Provider>
   </StrictMode>
 );

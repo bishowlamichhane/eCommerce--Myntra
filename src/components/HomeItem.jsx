@@ -2,43 +2,94 @@ import { useDispatch, useSelector } from "react-redux";
 import { bagAction } from "../store/bagSlice";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useAuth } from "../context/useAuth";
+import { addToUserBag, removeFromUserBag, getUserBag } from "../firebase/firebase";
 
 const HomeItem = ({ item }) => {
   const dispatch = useDispatch();
-  const bagItems = useSelector((store) => store.bag);
-  const elementFound = bagItems.some((bagItem) => bagItem.itemId === item.id);
+  const { currentUser } = useAuth();
+  const [bagItems, setBagItems] = useState([]);
+  const [elementFound, setElementFound] = useState(false);
+  const [quantity, setQuantity] = useState(1);
 
-  const [quantity, setQuantity] = useState(() => {
-    if (elementFound) {
-      const itemInBag = bagItems.find((bagItem) => bagItem.itemId === item.id);
-      return itemInBag ? itemInBag.quantity : 1;
-    } else {
-      return 1;
-    }
-  });
-
+  // Fetch bag items when component mounts or currentUser changes
   useEffect(() => {
-    if (elementFound) {
-      const itemInBag = bagItems.find((bagItem) => bagItem.itemId === item.id);
-      setQuantity(itemInBag ? itemInBag.quantity : 1);
-    } else {
-      setQuantity(1);
-    }
-  }, [elementFound, bagItems, item.id]);
+    const fetchBagItems = async () => {
+      if (currentUser) {
+        try {
+          const items = await getUserBag(currentUser.uid);
+          setBagItems(items);
+          const found = items.some((bagItem) => bagItem.productId === item.id);
+          setElementFound(found);
+          
+          if (found) {
+            const itemInBag = items.find((bagItem) => bagItem.productId === item.id);
+            setQuantity(itemInBag ? itemInBag.quantity : 1);
+          } else {
+            setQuantity(1);
+          }
+        } catch (error) {
+          console.error("Error fetching bag items:", error);
+        }
+      }
+    };
+
+    fetchBagItems();
+  }, [currentUser, item.id]);
 
   const navigate = useNavigate();
 
-  const handleAdded = (itemId) => {
-    const itemToAdd = { itemId, quantity };
-    dispatch(bagAction.addToBag(itemToAdd));
+  const handleAdded = async (itemId) => {
+    if (!currentUser) {
+      navigate('/login');
+      return;
+    }
+
+    try {
+      const productData = {
+        productId: itemId,
+        companyId: item.company || 'default',
+        quantity: quantity,
+        priceAtPurchase: item.current_price || 0,
+        itemDetails: {
+          name: item.item_name || '',
+          image: item.image || '',
+          company: item.company || '',
+          current_price: item.current_price || 0,
+          original_price: item.original_price || 0,
+          discount_percentage: item.discount_percentage || 0
+        }
+      };
+
+      // Add to Firestore
+      await addToUserBag(currentUser.uid, productData);
+      
+      // Update local state
+       setBagItems(prev => [...prev, { ...productData, id: Date.now() }]);
+      setElementFound(true);
+    } catch (error) {
+      console.error("Error adding item to bag:", error);
+    }
   };
 
   const itemClicked = (itemId) => {
     navigate(`/item/${itemId}`);
   };
 
-  const handleRemoved = (itemId) => {
-    dispatch(bagAction.removeFromBag(itemId));
+  const handleRemoved = async (itemId) => {
+    if (!currentUser) return;
+
+    try {
+      // Remove from Firestore
+      await removeFromUserBag(currentUser.uid, itemId);
+      
+      // Update local state
+      setBagItems(prev => prev.filter(item => item.productId !== itemId));
+      setElementFound(false);
+      setQuantity(1);
+    } catch (error) {
+      console.error("Error removing item from bag:", error);
+    }
   };
 
   return (

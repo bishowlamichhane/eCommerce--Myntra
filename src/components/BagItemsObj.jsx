@@ -1,27 +1,40 @@
 import { RxCross2 } from "react-icons/rx";
-import { useDispatch } from "react-redux";
-import { bagAction } from "../store/bagSlice";
+import { useAuth } from "../context/useAuth";
+import { removeFromUserBag } from "../firebase/firebase";
 
-const BagItemsObj = ({ item, quantity }) => {
-  const dispatch = useDispatch();
+const BagItemsObj = ({ item, quantity, onItemRemoved }) => {
+  const { currentUser } = useAuth();
 
-  const handleDelete = (itemId) => {
-    dispatch(bagAction.removeFromBag(itemId));
+  const handleDelete = async (itemId) => {
+    if (!currentUser) return;
+
+    try {
+      // Remove from Firestore
+      await removeFromUserBag(currentUser.uid, itemId);
+      
+      // Notify parent component to update the UI
+      if (onItemRemoved) {
+        onItemRemoved(itemId);
+      }
+    } catch (error) {
+      console.error("Error removing item from bag:", error);
+    }
   };
+
   return (
     <div className="bag-item-container">
       <div className="item-left-part">
-        <img className="bag-item-img" src={item.image} />
+        <img className="bag-item-img" src={item.itemDetails?.image || item.image} />
       </div>
-      <div style={{ display: "flex", justifyContent: "space-around" }}>
+      <div className="item-details-and-actions">
         <div className="item-right-part">
-          <div className="company">{item.company}</div>
-          <div className="item-name">{item.item_name}</div>
+          <div className="company">{item.itemDetails?.company || item.company}</div>
+          <div className="item-name">{item.itemDetails?.name || item.item_name}</div>
           <div className="price-container">
-            <span className="current-price">Rs {item.current_price}</span>
-            <span className="original-price">Rs {item.original_price}</span>
+            <span className="current-price">Rs {item.itemDetails?.current_price || item.current_price}</span>
+            <span className="original-price">Rs {item.itemDetails?.original_price || item.original_price}</span>
             <span className="discount-percentage">
-              {item.discount_percentage}% OFF
+              {item.itemDetails?.discount_percentage || item.discount_percentage}% OFF
             </span>
           </div>
           <div className="return-period">
@@ -35,11 +48,12 @@ const BagItemsObj = ({ item, quantity }) => {
             <span className="delivery-details-days">{item.delivery_date}</span>
           </div>
         </div>
-        <div>x{quantity}</div>
-      </div>
-
-      <div className="remove-from-cart" onClick={() => handleDelete(item.id)}>
-        <RxCross2 color="red" />
+        <div className="item-action-section">
+          <div className="item-quantity">x{quantity}</div>
+          <div className="remove-from-cart" onClick={() => handleDelete(item.productId || item.id)}>
+            <RxCross2 color="red" />
+          </div>
+        </div>
       </div>
     </div>
   );

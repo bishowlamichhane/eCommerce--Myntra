@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { collectionGroup, getDocs } from "firebase/firestore";
 import { itemsAction } from "../store/itemsSlice";
 import { fetchAction } from "../store/fetchStatusSlice";
-import { collection, getDocs } from "firebase/firestore";
-
+import { db } from "../firebase/firebase";
 import LoadingSpinner from "./LoadingSpinner";
-import { db } from "../firebase";
 
 const FetchItems = () => {
   const fetchStatus = useSelector((store) => store.fetchStatus);
@@ -18,13 +17,13 @@ const FetchItems = () => {
       try {
         dispatch(fetchAction.markFetchingStarted());
 
-        const itemsRef = collection(db, "items");
-        const querySnapShot = await getDocs(itemsRef);
-        const itemsData = querySnapShot.docs.map((doc) => ({
+        // This will search *all* `products` subcollections across Firestore
+        const querySnapshot = await getDocs(collectionGroup(db, "products"));
+        const itemsData = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
-
+        
         dispatch(itemsAction.addInitialItems(itemsData));
         dispatch(fetchAction.markFetchDone());
       } catch (error) {
@@ -38,11 +37,7 @@ const FetchItems = () => {
   }, [fetchStatus.fetchDone, dispatch]);
 
   if (fetchStatus.isFetching) {
-    return (
-      <div>
-        <LoadingSpinner />
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   return <div></div>;

@@ -4,15 +4,42 @@ import { BsFillHandbagFill } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useState, useEffect, useRef } from "react";
-
+import { useAuth } from "../context/useAuth";
+import { doSignOut } from "../firebase/auth";
+import { db } from "../firebase/firebase";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
+import styles from "./HeaderComponent.module.css"
 const HeaderComponent = () => {
-  const bag = useSelector((store) => store.bag);
+  const bag = useSelector((store) => store.bag) || [];
   const items = useSelector((store) => store.items);
   const [search, setSearch] = useState("");
   const [filteredItems, setFilteredItems] = useState([]);
+  const [isDropDown, setIsDropDown] = useState(false);
   const [showResults, setShowResults] = useState(false);
+  const [bagCount, setBagCount] = useState(0);
   const navigate = useNavigate();
   const searchContainerRef = useRef(null);
+  const { currentUser } = useAuth();
+
+  useEffect(() => {
+    let unsubscribe;
+    if (currentUser) {
+      const bagRef = collection(db, "users", currentUser.uid, "bag");
+      unsubscribe = onSnapshot(bagRef, (snapshot) => {
+        setBagCount(snapshot.size);
+      }, (error) => {
+        console.error("Error listening to bag changes:", error);
+      });
+    } else {
+      setBagCount(0);
+    }
+
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
+  }, [currentUser]);
 
   const showItem = (id) => {
     navigate(`/item/${id}`);
@@ -52,27 +79,28 @@ const HeaderComponent = () => {
     setShowResults(true);
   };
 
+  const handleSignOut = async () => {
+    try {
+      await doSignOut();
+      navigate("/login");
+    } catch (error) {
+      console.error("Error signing out: ", error);
+    }
+  };
+
   return (
-    <header>
-      <div className="logo_container">
+    <header className={styles.header}>
+      <div className={styles.logo_container}>
         <Link to={"/"}>
-          <img
-            className="myntra_home"
-            src="/images/myntra_logo.webp"
-            alt="Myntra Home"
-          />
+          <h1>Easy BUY</h1>
         </Link>
       </div>
 
       <nav className="nav_bar">
-        <a href="#">Men</a>
-        <a href="#">Women</a>
-        <a href="#">Kids</a>
-        <a href="#">Home & Living</a>
-        <a href="#">Beauty</a>
-        <a href="#">
-          Studio <sup>New</sup>
-        </a>
+        <a href="#">Shop</a>
+        <a href="#">About</a>
+        <a href="#">Wholesale</a>
+        
       </nav>
       <div className="search_bar" ref={searchContainerRef}>
         <span className="material-symbols-outlined search_icon">search</span>
@@ -110,11 +138,28 @@ const HeaderComponent = () => {
           </div>
         )}
       </div>
+
       <div className="action_bar">
-        <div className="action_container">
-          <FaUserAstronaut />
-          <span className="action_name">Profile</span>
-        </div>
+        {currentUser ? (
+          <div
+            className="action_container"
+            onClick={() => setIsDropDown((prev) => !prev)}
+          >
+            <FaUserAstronaut />
+            <span className="action_name">Profile</span>
+            {isDropDown && (
+              <div className="profile-dropdown">
+                <div>User Profile</div>
+                <div onClick={handleSignOut}>Sign Out</div>
+              </div>
+            )}
+          </div>
+        ) : (
+          <Link to="/login" className="action_container">
+            <FaUserAstronaut />
+            <span className="action_name">Login</span>
+          </Link>
+        )}
 
         <div className="action_container">
           <FaRegHeart />
@@ -124,7 +169,7 @@ const HeaderComponent = () => {
         <Link to={"/bag"} className="action_container">
           <BsFillHandbagFill />
           <span className="action_name">Bag</span>
-          <span className="bag-item-count">{bag.length}</span>
+          {bagCount > 0 && <span className="bag-item-count">{bagCount}</span>}
         </Link>
       </div>
     </header>
