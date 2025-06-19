@@ -3,6 +3,7 @@ import { useAuth } from "../context/useAuth";
 import { getUserBag } from "../firebase/firebase";
 import BagItemsObj from "../components/BagItemsObj";
 import BagSummary from "../components/BagSummary";
+import { motion } from "framer-motion";
 
 const Bag = () => {
   const { currentUser } = useAuth();
@@ -50,8 +51,25 @@ const Bag = () => {
 
   return (
     <main>
-      <div className="bag-page">
-        <div className="bag-items-container">
+      <motion.div
+        className="bag-page"
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+      >
+        <motion.div
+          className="bag-items-container"
+          variants={{
+            hidden: {},
+            show: {
+              transition: {
+                staggerChildren: 0.18,
+              },
+            },
+          }}
+          initial="hidden"
+          animate="show"
+        >
           {bagItems.length === 0 ? (
             <div className="empty-bag">Your bag is empty</div>
           ) : (
@@ -64,11 +82,16 @@ const Bag = () => {
               />
             ))
           )}
-        </div>
-        <div className="bag-summary">
+        </motion.div>
+        <motion.div
+          className="bag-summary"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: "easeOut", delay: 0.3 }}
+        >
           <BagSummary bagItems={bagItems} />
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </main>
   );
 };

@@ -9,17 +9,43 @@ import { doSignOut } from "../firebase/auth";
 import { db } from "../firebase/firebase";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import styles from "./HeaderComponent.module.css"
+import SideMenu from "./SideMenu";
+
 const HeaderComponent = () => {
   const bag = useSelector((store) => store.bag) || [];
   const items = useSelector((store) => store.items);
   const [search, setSearch] = useState("");
   const [filteredItems, setFilteredItems] = useState([]);
   const [isDropDown, setIsDropDown] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [bagCount, setBagCount] = useState(0);
+  const [isVisible, setIsVisible] = useState(true);
+  const lastScrollY = useRef(0);
   const navigate = useNavigate();
   const searchContainerRef = useRef(null);
   const { currentUser } = useAuth();
+  const [sideMenuOpen, setSideMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const scrollingDown = currentScrollY > lastScrollY.current;
+      const scrollAmount = Math.abs(currentScrollY - lastScrollY.current);
+
+      // Only trigger hide/show if scrolled more than 10px
+      if (scrollAmount > 10) {
+        setIsVisible(!scrollingDown);
+        lastScrollY.current = currentScrollY;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   useEffect(() => {
     let unsubscribe;
@@ -43,6 +69,7 @@ const HeaderComponent = () => {
 
   const showItem = (id) => {
     navigate(`/item/${id}`);
+    setShowSearch(false);
   };
 
   useEffect(() => {
@@ -61,9 +88,11 @@ const HeaderComponent = () => {
     const handleClickOutside = (event) => {
       if (
         searchContainerRef.current &&
-        !searchContainerRef.current.contains(event.target)
+        !searchContainerRef.current.contains(event.target) &&
+        !event.target.closest(`.${styles.search_button}`)
       ) {
-        setShowResults(false);
+        setShowSearch(false);
+        setSearch("");
       }
     };
 
@@ -88,91 +117,105 @@ const HeaderComponent = () => {
     }
   };
 
+  const toggleSearch = () => {
+    setShowSearch(!showSearch);
+    if (!showSearch) {
+      setTimeout(() => {
+        const searchInput = document.querySelector(`.${styles.search_input}`);
+        if (searchInput) searchInput.focus();
+      }, 100);
+    } else {
+      setSearch("");
+    }
+  };
+
   return (
-    <header className={styles.header}>
-      <div className={styles.logo_container}>
-        <Link to={"/"}>
-          <h1>Easy BUY</h1>
-        </Link>
-      </div>
+    <>
+      <header className={`${styles.header} ${isVisible ? styles.visible : styles.hidden}`}>
+        <button
+          className={styles.hamburger_menu}
+          onClick={() => setSideMenuOpen(true)}
+          aria-label="Open menu"
+        >
+          &#9776;
+        </button>
+        <nav className={styles.nav_bar}>
+          <a href="#" onClick={e => { e.preventDefault(); setSideMenuOpen(true); }}>Shop</a>
+          <a href="#">About</a>
+          <a href="#">Wholesale</a>
+        </nav>
 
-      <nav className="nav_bar">
-        <a href="#">Shop</a>
-        <a href="#">About</a>
-        <a href="#">Wholesale</a>
-        
-      </nav>
-      <div className="search_bar" ref={searchContainerRef}>
-        <span className="material-symbols-outlined search_icon">search</span>
-        <input
-          className="search_input"
-          placeholder="Search for products, brands and more"
-          value={search}
-          onChange={handleSearchChange}
-          onFocus={() => setShowResults(true)}
-        />
-        {showResults && search && (
-          <div className="search_results_container">
-            {filteredItems.length > 0 ? (
-              filteredItems.map((item) => (
-                <div
-                  key={item.id}
-                  className="search_result_item"
-                  onClick={() => showItem(item.id)}
-                >
-                  <img
-                    src={`/${item.image}`}
-                    alt={item.item_name}
-                    className="search_result_image"
-                  />
-                  <div className="search_result_details">
-                    <p className="search_result_name">{item.item_name}</p>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className="search_result_item">
-                <p className="search_result_name">No results found</p>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-
-      <div className="action_bar">
-        {currentUser ? (
-          <div
-            className="action_container"
-            onClick={() => setIsDropDown((prev) => !prev)}
-          >
-            <FaUserAstronaut />
-            <span className="action_name">Profile</span>
-            {isDropDown && (
-              <div className="profile-dropdown">
-                <div>User Profile</div>
-                <div onClick={handleSignOut}>Sign Out</div>
-              </div>
-            )}
-          </div>
-        ) : (
-          <Link to="/login" className="action_container">
-            <FaUserAstronaut />
-            <span className="action_name">Login</span>
+        <div className={styles.logo_container}>
+          <Link to={"/"}>
+            <h1>NOVA WEAR</h1>
           </Link>
-        )}
-
-        <div className="action_container">
-          <FaRegHeart />
-          <span className="action_name">Wishlist</span>
         </div>
 
-        <Link to={"/bag"} className="action_container">
-          <BsFillHandbagFill />
-          <span className="action_name">Bag</span>
-          {bagCount > 0 && <span className="bag-item-count">{bagCount}</span>}
-        </Link>
-      </div>
-    </header>
+        <div className={styles.right_section}>
+          <button className={styles.search_button} onClick={toggleSearch}>
+            Search
+          </button>
+          <div className={styles.currency}>USD $</div>
+          {currentUser ? (
+            <div className={styles.account_section}>
+              <button onClick={() => setIsDropDown(!isDropDown)}>Account</button>
+              {isDropDown && (
+                <div className={styles.profile_dropdown}>
+                  <div>User Profile</div>
+                  <div onClick={handleSignOut}>Sign Out</div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Link to="/login" className={styles.account_section}>
+              <button>Account</button>
+            </Link>
+          )}
+          <Link to="/bag" className={styles.cart_section}>
+            Cart {bagCount > 0 && <span>({bagCount})</span>}
+          </Link>
+        </div>
+
+        {showSearch && (
+          <div className={styles.search_overlay} ref={searchContainerRef}>
+            <div className={styles.search_container}>
+              <input
+                className={styles.search_input}
+                placeholder="Search..."
+                value={search}
+                onChange={handleSearchChange}
+                onFocus={() => setShowResults(true)}
+              />
+              <button className={styles.close_search} onClick={toggleSearch}>
+                ✕
+              </button>
+            </div>
+            {showResults && search && (
+              <div className={styles.search_results}>
+                {filteredItems.length > 0 ? (
+                  filteredItems.map((item) => (
+                    <div
+                      key={item.id}
+                      className={styles.search_result_item}
+                      onClick={() => showItem(item.id)}
+                    >
+                      <img src={`/${item.image}`} alt={item.item_name} />
+                      <div className={styles.result_details}>
+                        <p>{item.item_name}</p>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className={styles.no_results}>No results found</div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+      </header>
+      <SideMenu open={sideMenuOpen} onClose={() => setSideMenuOpen(false)} highlight="Shop" />
+      <div className={styles.header_spacer} />
+    </>
   );
 };
 

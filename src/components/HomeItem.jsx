@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/useAuth";
 import { addToUserBag, removeFromUserBag, getUserBag } from "../firebase/firebase";
+import { motion } from "framer-motion";
 
 const HomeItem = ({ item }) => {
   const dispatch = useDispatch();
@@ -93,7 +94,13 @@ const HomeItem = ({ item }) => {
   };
 
   return (
-    <div className="item-container">
+    <motion.div
+      className="item-container"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      viewport={{ once: true, amount: 0.2 }}
+    >
       <div onClick={() => itemClicked(item.id)} style={{ cursor: "pointer" }}>
         <img className="item-image" src={item.image} alt="item image" />
 
@@ -154,7 +161,7 @@ const HomeItem = ({ item }) => {
           </>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

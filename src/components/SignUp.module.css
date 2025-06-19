@@ -1,80 +1,146 @@
 .authContainer {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #f5f5f5;
+  background: #f6f6f6;
+  font-family: 'Martian Mono', monospace;
+}
+
+.breadcrumb {
+  width: 100%;
+  max-width: 700px;
+  margin: 28px auto 0 auto;
+  color: #888;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  font-family: 'Martian Mono', monospace;
+  text-align: left;
+  padding-left: 10px;
+  margin-bottom: 18px;
+  font-weight: 400;
 }
 
 .authBox {
-  background: white;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .authTitle {
   text-align: center;
-  color: #333;
-  margin-bottom: 1.5rem;
-  font-size: 1.8rem;
+  color: #222;
+  margin-bottom: 1.2rem;
+  font-size: 1.3rem;
+  font-family: 'Martian Mono', monospace;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .formGroup {
   margin-bottom: 1rem;
+  width: 100%;
 }
 
 .formLabel {
   display: block;
-  margin-bottom: 0.5rem;
-  color: #555;
-  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+  color: #222;
+  font-size: 0.97rem;
+  font-family: 'Martian Mono', monospace;
+  font-weight: 400;
 }
 
 .formInput {
   width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
-  transition: border-color 0.3s;
+  padding: 0.6rem 0.5rem;
+  border: 1px solid #bbb;
+  border-radius: 0;
+  font-size: 0.95rem;
+  font-family: 'Martian Mono', monospace;
+  background: #fff;
+  color: #222;
+  transition: border-color 0.2s;
 }
 
 .formInput:focus {
   outline: none;
-  border-color: #ff3e6c;
+  border-color: #222;
 }
 
 .submitButton {
   width: 100%;
-  padding: 0.75rem;
-  background-color: #ff3e6c;
-  color: white;
+  padding: 0.7rem;
+  background-color: #222;
+  color: #fff;
   border: none;
-  border-radius: 4px;
-  font-size: 1rem;
+  border-radius: 0;
+  font-size: 0.95rem;
+  font-family: 'Martian Mono', monospace;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   cursor: pointer;
-  transition: background-color 0.3s;
+  margin-top: 1rem;
+  transition: background 0.2s;
 }
 
 .submitButton:hover {
-  background-color: #ff1f4f;
+  background-color: #444;
 }
 
 .authSwitch {
   text-align: center;
-  margin-top: 1rem;
-  color: #666;
+  margin-top: 1.2rem;
+  color: #888;
+  font-family: 'Martian Mono', monospace;
+  font-size: 0.97rem;
+  font-weight: 400;
 }
 
 .authLink {
-  color: #ff3e6c;
-  text-decoration: none;
+  color: #222;
+  text-decoration: underline;
   margin-left: 0.5rem;
+  font-family: 'Martian Mono', monospace;
+  font-weight: 500;
 }
 
 .authLink:hover {
-  text-decoration: underline;
+  color: #ff3e6c;
+}
+
+@media (max-width: 600px) {
+  .authBox {
+    max-width: 98vw;
+    padding: 0 2vw;
+  }
+
+  .authTitle {
+    font-size: 1.05rem;
+  }
+
+  .formInput,
+  .submitButton {
+    font-size: 0.92rem;
+    padding: 0.5rem 0.4rem;
+  }
+
+  .breadcrumb {
+    font-size: 10px;
+    margin-bottom: 10px;
+  }
+
+  .authSwitch {
+    font-size: 0.92rem;
+  }
 }

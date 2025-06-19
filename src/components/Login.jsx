@@ -66,9 +66,10 @@ const Login = () => {
 
   return (
     <div className={styles.loginContainer}>
+      <div className={styles.breadcrumb}>HOME &nbsp;/&nbsp; ACCOUNT</div>
       <div className={styles.loginBox}>
-        <h2 className={styles.loginTitle}>Login</h2>
-        <form onSubmit={handleSubmit}>
+        <h2 className={styles.loginTitle}>LOGIN</h2>
+        <form onSubmit={handleSubmit} style={{ width: '100%' }}>
           {error && <p className="error-message">{error}</p>}
           {showCustomerError && <div className="error-message">Customer does not exist</div>}
           <div className={styles.formGroup}>
@@ -98,13 +99,13 @@ const Login = () => {
             />
           </div>
           <button type="submit" className={styles.submitButton} disabled={isSigningIn}>
-            {isSigningIn ? "Signing In..." : "Login"}
+            {isSigningIn ? "Signing In..." : "Sign in"}
           </button>
         </form>
         <div className={styles.loginSwitch}>
           Don't have an account?
           <Link to="/signup" className={styles.loginLink}>
-            Sign Up
+            Create account
           </Link>
         </div>
       </div>

@@ -53,7 +53,7 @@ const SignUp = () => {
         createdAt: new Date().toISOString(),
       });
 
-      const bagRef = await addDoc(collection(firestore,"users",user.uid,"bag"),{name:formData.name});
+
       
 
       navigate("/login");
@@ -67,9 +67,10 @@ const SignUp = () => {
 
   return (
     <div className={styles.authContainer}>
+      <div className={styles.breadcrumb}>HOME &nbsp;/&nbsp; SIGNUP</div>
       <div className={styles.authBox}>
         <h2 className={styles.authTitle}>Create Account</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} style={{ width: '100%' }}>
           <div className={styles.formGroup}>
             <label className={styles.formLabel} htmlFor="name">
               Full Name

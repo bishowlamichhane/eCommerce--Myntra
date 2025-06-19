@@ -1,6 +1,7 @@
 import { RxCross2 } from "react-icons/rx";
 import { useAuth } from "../context/useAuth";
 import { removeFromUserBag } from "../firebase/firebase";
+import { motion } from "framer-motion";
 
 const BagItemsObj = ({ item, quantity, onItemRemoved }) => {
   const { currentUser } = useAuth();
@@ -22,7 +23,15 @@ const BagItemsObj = ({ item, quantity, onItemRemoved }) => {
   };
 
   return (
-    <div className="bag-item-container">
+    <motion.div
+      className="bag-item-container"
+      variants={{
+        hidden: { opacity: 0, y: 40 },
+        show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+      }}
+      initial="hidden"
+      animate="show"
+    >
       <div className="item-left-part">
         <img className="bag-item-img" src={item.itemDetails?.image || item.image} />
       </div>
@@ -55,7 +64,7 @@ const BagItemsObj = ({ item, quantity, onItemRemoved }) => {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux";
+import { motion } from "framer-motion";
 
 const BagSummary = ({ bagItems = [] }) => {
   const CONVENIENCE_FEES = 99;
@@ -32,7 +33,12 @@ const BagSummary = ({ bagItems = [] }) => {
   }
 
   return (
-    <div>
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7, ease: "easeOut" }}
+      viewport={{ once: true, amount: 0.2 }}
+    >
       <div className="bag-details-container">
         <div className="price-header">PRICE ({totalItem} Items)</div>
         <div className="price-item">
@@ -64,7 +70,7 @@ const BagSummary = ({ bagItems = [] }) => {
           <div className="css-xjhrni">PLACE ORDER</div>
         </button>
       )}
-    </div>
+    </motion.div>
   );
 };
 
