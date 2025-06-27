@@ -161,7 +161,7 @@ const HeaderComponent = () => {
               <button onClick={() => setIsDropDown(!isDropDown)}>Account</button>
               {isDropDown && (
                 <div className={styles.profile_dropdown}>
-                  <div>User Profile</div>
+                  <div onClick={()=>navigate('/profile')}>User Profile</div>
                   <div onClick={handleSignOut}>Sign Out</div>
                 </div>
               )}

@@ -20,7 +20,8 @@ export function AuthProvider({ children }) {
           uid: user.uid,
           email: user.email,
           emailVerified: user.emailVerified,
-          displayName: user.displayName,
+          name: user.name,
+          role:user.role,
           photoURL: user.photoURL,
         });
       } else {

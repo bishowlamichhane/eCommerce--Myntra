@@ -2,7 +2,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import FooterComponent from "../components/FooterComponent";
 import HeaderComponent from "../components/HeaderComponent";
 import FetchItems from "../components/FetchItems";
-import { useSelector } from "react-redux";
+
 import LoadingSpinner from "../components/LoadingSpinner";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
@@ -10,13 +10,15 @@ import { useAuth } from "../context/useAuth";
 import { Firestore, getFirestore, doc, getDoc } from "firebase/firestore";
 import { getAuth, signOut } from "firebase/auth";
 import { app } from "../firebase/firebase";
-
+import { useDispatch, useSelector } from "react-redux";
+import { userAction } from "../store/userSlice";
 const App = () => {
   const auth = getAuth(app);
   const firestore = getFirestore(app);
   const navigate = useNavigate();
   const [userData, setUserData] = useState([]);
   const { currentUser, loading: authLoading } = useAuth();
+  const dispatch = useDispatch();
 
   const [isVisible, setIsVisible] = useState(false);
   const fetchStatus = useSelector((store) => store.fetchStatus);
@@ -37,6 +39,7 @@ const App = () => {
         console.log("User data found: ", userDoc.data());
         const userData = userDoc.data();
         setUserData(userDoc.data());
+        dispatch(userAction.addUser(userDoc.data()))
         return userData;
       }
       return null;

@@ -14,6 +14,7 @@ import AddItem from "./components/AddItem.jsx";
 import Login from "./components/Login.jsx";
 import SignUp from "./components/SignUp.jsx";
 import { AuthProvider } from "./context/useAuth.jsx";
+import Profile from "./routes/Profile.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -30,6 +31,11 @@ const router = createBrowserRouter([
       {
         path: "/signup",
         element: <SignUp />,
+      },
+      {
+        path:"/profile",
+        element:<Profile />
+
       },
 
       {
