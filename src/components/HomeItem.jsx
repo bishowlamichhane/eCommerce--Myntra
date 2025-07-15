@@ -101,7 +101,7 @@ const HomeItem = ({ item }) => {
       transition={{ duration: 0.6, ease: "easeOut" }}
       viewport={{ once: true, amount: 0.2 }}
     >
-      <div onClick={() => itemClicked(item.id)} style={{ cursor: "pointer" }}>
+      <div onClick={() => itemClicked(item.uid)} style={{ cursor: "pointer" }}>
         <img className="item-image" src={item.image} alt="item image" />
 
         <div className="rating">

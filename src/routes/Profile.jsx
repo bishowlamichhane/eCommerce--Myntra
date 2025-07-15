@@ -80,7 +80,7 @@ const Profile = () => {
                                     <div className={styles.cardContent}>
                                         <svg
                                             className={styles.creditCardSvg}
-                                            width="100%" height="180" viewBox="0 0 500 180" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                            width="100%" height="180" viewBox="0 0 500 180" fill="none" xmlns="http://www.w3.org/2000/svg" 
                                         >
                                             <rect x="8" y="8" width="484" height="164" rx="20" fill="#fff" stroke="#bbb" strokeWidth="3"/>
                                             <rect x="32" y="32" width="60" height="40" rx="8" fill="#e0e0e0"/>
