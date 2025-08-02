@@ -75,7 +75,7 @@ export const getUserBag = async (userId) => {
 
 export const addProduct = async (productData) => {
   try {
-    const docRef = await addDoc(collection(db, "users", 'tkSYv5nSKyQVspQRejzbDTxHAG72', "company", 'FOe0IF59zF20NOOVECBH', "products"), productData);
+    const docRef = await addDoc(collection(db, "users", 'eEE3wThqZcaeKJGeR4hZqMwKrFH3', "company", 'NzbCt8njzq7QYzJYx0b4', "products"), productData);
     console.log("Document written with ID: ", docRef.id);
     return docRef.id;
   } catch (e) {
