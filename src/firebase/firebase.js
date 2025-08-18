@@ -76,11 +76,55 @@ export const getUserBag = async (userId) => {
 export const addProduct = async (productData) => {
   try {
     const docRef = await addDoc(collection(db, "users", 'eEE3wThqZcaeKJGeR4hZqMwKrFH3', "company", 'NzbCt8njzq7QYzJYx0b4', "products"), productData);
-    console.log("Document written with ID: ", docRef.id);
+
     return docRef.id;
   } catch (e) {
     console.error("Error adding document: ", e);
     throw e;
+  }
+};
+
+// Create order in Firebase
+export const createOrder = async (userId, orderData) => {
+  try {
+    const orderRef = collection(db, "orders");
+    const docRef = await addDoc(orderRef, {
+      userId: userId,
+      items: orderData.items,
+      orderSummary: {
+        totalItems: orderData.totalItems,
+        totalMRP: orderData.totalMRP,
+        totalDiscount: orderData.totalDiscount,
+        convenienceFee: orderData.convenienceFee,
+        finalAmount: orderData.finalAmount
+      },
+      orderDate: new Date().toISOString(),
+      status: "pending",
+      ...orderData.additionalInfo
+    });
+
+    return docRef.id;
+  } catch (error) {
+    console.error("Error creating order:", error);
+    throw error;
+  }
+};
+
+// Clear all items from user's bag
+export const clearUserBag = async (userId) => {
+  try {
+    const bagRef = collection(db, "users", userId, "bag");
+    const querySnapshot = await getDocs(bagRef);
+
+    // Delete all bag items
+    const deletePromises = querySnapshot.docs.map(doc => deleteDoc(doc.ref));
+    await Promise.all(deletePromises);
+
+
+    return true;
+  } catch (error) {
+    console.error("Error clearing user bag:", error);
+    throw error;
   }
 };
 

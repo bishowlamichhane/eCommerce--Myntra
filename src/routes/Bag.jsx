@@ -37,6 +37,10 @@ const Bag = () => {
     setBagItems(prevItems => prevItems.filter(item => item.productId !== itemId));
   };
 
+  const handleOrderPlaced = () => {
+    setBagItems([]);
+  };
+
   if (loading) {
     return <div className="loading">Loading your bag...</div>;
   }
@@ -89,7 +93,7 @@ const Bag = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: "easeOut", delay: 0.3 }}
         >
-          <BagSummary bagItems={bagItems} />
+          <BagSummary bagItems={bagItems} onOrderPlaced={handleOrderPlaced} />
         </motion.div>
       </motion.div>
     </main>
