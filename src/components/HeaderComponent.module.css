@@ -248,35 +248,35 @@
 
 @media (max-width: 600px) {
   .header {
-    flex-direction: column;
-    padding: 10px 5px;
+    padding: 12px 8px;
     height: auto;
+
+    justify-content: space-between;
   }
 
   .nav_bar {
-    flex-direction: column;
-    gap: 10px;
-    align-items: center;
-    width: 100%;
+    gap: 8px;
+    flex-shrink: 1;
+  }
+
+  .nav_bar a {
+    font-size: 10px;
+    white-space: nowrap;
   }
 
   .logo_container {
     position: static;
     transform: none;
-    margin: 10px 0;
-    width: 100%;
-    text-align: center;
+    flex-shrink: 0;
   }
 
   .logo_container h1 {
-    font-size: 15px;
+    font-size: 14px;
   }
 
   .right_section {
-    flex-direction: column;
-    gap: 10px;
-    align-items: center;
-    width: 100%;
+    gap: 8px;
+    flex-shrink: 1;
   }
 
   .search_overlay {
@@ -319,24 +319,29 @@
   .right_section button,
   .right_section a,
   .right_section .currency {
-    font-size: 11px;
-    padding: 6px 0;
+    font-size: 9px;
+    padding: 4px 2px;
+    white-space: nowrap;
   }
 
   .cart_section span {
-    font-size: 11px;
+    font-size: 9px;
   }
 
   .account_section button {
-    font-size: 11px;
+    font-size: 9px;
   }
 
   .search_button {
-    font-size: 11px;
+    font-size: 9px;
   }
 
   .currency {
-    font-size: 11px;
+    font-size: 9px;
+  }
+
+  .logo_container h1 {
+    font-size: 12px;
   }
 
   .hamburger_menu {

@@ -112,3 +112,74 @@
 .closeButton:hover {
     color: #ffe6b3;
 }
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .sidemenu_backdrop {
+        width: 100vw;
+    }
+
+    .overlay {
+        width: 100vw;
+    }
+
+    .menu {
+        padding: 0 0 0 40px;
+    }
+
+    .menuHeader {
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+
+    .menuNav {
+        flex-direction: column;
+        gap: 16px;
+        font-size: 12px;
+    }
+
+    .menuLogo {
+        font-size: 16px;
+        margin-bottom: 18px;
+    }
+
+    .menuTitle {
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
+
+    .menuList li {
+        font-size: 12px;
+        margin-bottom: 6px;
+    }
+
+    .closeButton {
+        top: 15px;
+        right: 15px;
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 600px) and (min-width: 481px) {
+    .sidemenu_backdrop {
+        width: 80vw;
+    }
+
+    .overlay {
+        width: 80vw;
+    }
+
+    .menu {
+        padding: 0 0 0 60px;
+    }
+}
+
+@media (max-width: 768px) and (min-width: 601px) {
+    .sidemenu_backdrop {
+        width: 60vw;
+    }
+
+    .overlay {
+        width: 60vw;
+    }
+}

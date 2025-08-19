@@ -1,4 +1,5 @@
 import HomeItem from "../components/HomeItem";
+import HomeCarousel from "../components/HomeCarousel";
 import { useSelector } from "react-redux";
 import { PiNetworkXLight } from "react-icons/pi";
 import styles from "./Home.module.css";
@@ -86,19 +87,14 @@ const Home = () => {
 
   return (
     <main>
-      <motion.section
-        className={styles.hero_section}
+      <motion.div
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: "easeOut" }}
         viewport={{ once: true, amount: 0.2 }}
       >
-        <img 
-          src="/images/man.jpg" 
-          alt="Mannequin collection display" 
-          className={styles.hero_image}
-        />
-      </motion.section>
+        <HomeCarousel />
+      </motion.div>
 
       <motion.section
         className={styles.new_arrivals}
