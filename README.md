@@ -78,21 +78,7 @@ Myntra is a comprehensive e-commerce solution that combines the power of React a
 📸 **Screenshots**
 ----------------
 
-[Insert screenshots of the application]
+<img width="1899" height="906" alt="image" src="https://github.com/user-attachments/assets/bc510202-eb8d-4ea7-bd66-d57bc2be7cbb" />
+<img width="1745" height="895" alt="image" src="https://github.com/user-attachments/assets/d0e340a8-fee0-427b-8e77-34284d31c33e" />
 
-📦 **API Reference**
-----------------
 
-[Insert API reference documentation]
-
-👤 **Author**
----------
-
-[Your Name]
-
-📝 **License**
----------
-
-MIT License
-
-I hope this README.md file meets your requirements! Let me know if you need any further assistance. 😊
