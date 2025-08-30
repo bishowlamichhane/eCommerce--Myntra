@@ -124,8 +124,8 @@ serve(async (req) => {
           product_code: merchantCode,
           product_service_charge: "0",
           product_delivery_charge: "0",
-          success_url: `${baseUrl}/checkout?status=success&method=esewa`,
-          failure_url: `${baseUrl}/checkout?status=failed&method=esewa`,
+          success_url: `${baseUrl}/checkout?status=success&method=esewa` || `https://e-commerce-myntra-omega.vercel.app/checkout?status=success&method=esewa`,
+          failure_url: `${baseUrl}/checkout?status=failed&method=esewa` || `https://e-commerce-myntra-omega.vercel.app/checkout?status=failed&method=esewa` ,
           signed_field_names: "total_amount,transaction_uuid,product_code",
         };
         
