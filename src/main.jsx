@@ -15,6 +15,10 @@ import Login from "./components/Login.jsx";
 import SignUp from "./components/SignUp.jsx";
 import { AuthProvider } from "./context/useAuth.jsx";
 import Profile from "./routes/Profile.jsx";
+import Categories from "./components/categories/Categories.jsx";
+import Test from "./routes/Test.jsx";
+import EsewaPayment from "./routes/EsewaPayment.jsx";
+import Checkout from "./routes/Checkout.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -43,6 +47,16 @@ const router = createBrowserRouter([
         element: <Bag />,
       },
       {
+        path: "/checkout",
+        element: <Checkout/>,
+      },
+      
+   
+      {
+        path: "/category",
+        element:<Categories />
+      },
+      {
         path: "/item/:id",
         element: <ItemPage />,
       },
@@ -52,14 +66,13 @@ const router = createBrowserRouter([
     path: "/addItem",
     element: <AddItem />,
   },
+ 
 ]);
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
     <Provider store={myntraStore}>
       <AuthProvider>
         <RouterProvider router={router} />
       </AuthProvider>
     </Provider>
-  </StrictMode>
 );

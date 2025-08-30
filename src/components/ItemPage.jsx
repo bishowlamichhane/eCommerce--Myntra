@@ -5,6 +5,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { bagAction } from "../store/bagSlice";
 import { useAuth } from "../context/useAuth";
 import { addToUserBag, removeFromUserBag } from "../firebase/firebase";
+import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
 
 const ItemPage = () => {
   const { id } = useParams();
@@ -89,6 +90,8 @@ const ItemPage = () => {
   };
 
   return (
+    <div>
+      <button style={{ marginBottom: "20px"  ,marginLeft:"20px", display:"flex" , alignItems:"center" , gap:"5px "}} onClick={()=>navigate('/')}><MdKeyboardDoubleArrowLeft/>Back home</button>
     <div className="item-page-container" style={{ padding: "20px", maxWidth: "1000px", margin: "0 auto" }}>
       <div style={{ display: "flex", gap: "40px" }}>
         <div style={{ flex: "1", height: "400px", overflow: "hidden" }}>
@@ -104,7 +107,7 @@ const ItemPage = () => {
           />
         </div>
         <div style={{ flex: "1" }}>
-          <h1 style={{ fontSize: "24px", marginBottom: "10px" }}>
+          <h1 style={{ fontSize: "20px", marginBottom: "10px" }}>
             {foundItem.item_name}
           </h1>
           <p style={{ color: "#666", marginBottom: "20px" }}>
@@ -112,7 +115,7 @@ const ItemPage = () => {
           </p>
 
           <div style={{ marginBottom: "20px" }}>
-            <span style={{ fontSize: "20px", fontWeight: "bold" }}>
+            <span style={{ fontSize: "16px", fontWeight: "bold" }}>
               Rs {foundItem.current_price}
             </span>
             <span
@@ -130,7 +133,7 @@ const ItemPage = () => {
           </div>
 
           <div style={{ marginBottom: "20px" }}>
-            <p style={{ fontWeight: "bold" }}>
+            <p style={{ fontWeight: "normal" }}>
               Rating: {foundItem.rating?.stars || 0} ⭐
             </p>
             <p>Reviews: {foundItem.rating?.count || 0}</p>
@@ -197,6 +200,7 @@ const ItemPage = () => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

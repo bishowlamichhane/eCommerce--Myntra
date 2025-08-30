@@ -4,12 +4,16 @@ import { getUserBag } from "../firebase/firebase";
 import BagItemsObj from "../components/BagItemsObj";
 import BagSummary from "../components/BagSummary";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const Bag = () => {
   const { currentUser } = useAuth();
+  const navigate = useNavigate();
   const [bagItems, setBagItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showPopup ,setShowPopup] = useState(false)
+
 
   useEffect(() => {
     const fetchBagItems = async () => {
@@ -38,7 +42,8 @@ const Bag = () => {
   };
 
   const handleOrderPlaced = () => {
-    setBagItems([]);
+    // Redirect to checkout page instead of handling order here
+    navigate('/checkout');
   };
 
   if (loading) {
@@ -55,11 +60,13 @@ const Bag = () => {
 
   return (
     <main>
+
+    
       <motion.div
         className="bag-page"
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: "easeOut" }}
+        transition={{ duration: 0.2, ease: "easeOut" }}
       >
         <motion.div
           className="bag-items-container"
@@ -91,9 +98,9 @@ const Bag = () => {
           className="bag-summary"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: "easeOut", delay: 0.3 }}
+          transition={{ duration: 0.3, ease: "easeOut", delay: 0.3 }}
         >
-          <BagSummary bagItems={bagItems} onOrderPlaced={handleOrderPlaced} />
+          <BagSummary bagItems={bagItems} onOrderPlaced={handleOrderPlaced} showPopup={showPopup} setShowPopup = {setShowPopup}/>
         </motion.div>
       </motion.div>
     </main>

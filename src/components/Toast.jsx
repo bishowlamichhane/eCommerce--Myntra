@@ -39,7 +39,7 @@ const Toast = () => {
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -30 }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
+          transition={{ duration: 0.2, ease: "easeOut" }}
           className="fixed top-16 left-1/2 transform -translate-x-1/2 z-50 w-96 mx-4"
         >
           <div className={getToastStyles()}>

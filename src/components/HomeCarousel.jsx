@@ -106,7 +106,7 @@ const HomeCarousel = () => {
               zIndex: index === currentIndex ? 1 : 0,
             }}
             transition={{ 
-              opacity: { duration: 0.3, ease: "easeInOut" },
+              opacity: { duration: 0.2, ease: "easeInOut" },
               zIndex: { duration: 0 }
             }}
           >

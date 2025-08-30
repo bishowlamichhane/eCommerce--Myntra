@@ -86,11 +86,11 @@ const Home = () => {
   const getQuantity = (itemId) => quantities[itemId] || 1;
 
   return (
-    <main>
+    <main >
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: "easeOut" }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
         viewport={{ once: true, amount: 0.2 }}
       >
         <HomeCarousel />
@@ -100,7 +100,7 @@ const Home = () => {
         className={styles.new_arrivals}
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
+        transition={{ duration: 0.3, ease: "easeOut", delay: 0.2 }}
         viewport={{ once: true, amount: 0.2 }}
       >
         <h1 className={styles.new_arrivals_title}>NEW ARRIVALS</h1>
@@ -115,7 +115,7 @@ const Home = () => {
         className={styles.new_items_section}
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: "easeOut", delay: 0.4 }}
+        transition={{ duration: 0.3, ease: "easeOut", delay: 0.4 }}
         viewport={{ once: true, amount: 0.2 }}
       >
         <div className={styles.new_items_header}>
@@ -148,10 +148,10 @@ const Home = () => {
                   className={styles.product_card}
                   variants={{
                     hidden: { opacity: 0, y: 40 },
-                    show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+                    show: { opacity: 1, y: 0, transition: { duration: 0.2, ease: "easeOut" } },
                   }}
                 >
-                  <div className={styles.product_image} style={{ position: 'relative' }}>
+                  <div className={styles.product_image} style={{ position: 'relative' }} onClick={()=>navigate(`/item/${item.id}`)}>
                     <img 
                       src={`/${item.image}`} 
                       alt={item.item_name}
@@ -225,7 +225,7 @@ const Home = () => {
       <motion.section className={styles.our_production_section}
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: "easeOut", delay: 0.4 }}
+        transition={{ duration: 0.3, ease: "easeOut", delay: 0.4 }}
         viewport={{ once: true, amount: 0.2 }}>
         <h2 className={styles.our_production_heading}>OUR PRODUCTION<span style={{ fontWeight: 100 }}>__</span></h2>
         <motion.div
@@ -244,7 +244,7 @@ const Home = () => {
         >
           <motion.div
             className={styles.our_production_col}
-            variants={{ hidden: { opacity: 0, y: 40 }, show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' } } }}
+            variants={{ hidden: { opacity: 0, y: 40 }, show: { opacity: 1, y: 0, transition: { duration: 0.3, ease: 'easeOut' } } }}
           >
             <img src="/images/prod1.jpg" alt="Knitting Mill" className={styles.our_production_img} />
             <h3 className={styles.our_production_title}>KNITTING MILL</h3>
@@ -254,7 +254,7 @@ const Home = () => {
           </motion.div>
           <motion.div
             className={styles.our_production_col}
-            variants={{ hidden: { opacity: 0, y: 40 }, show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' } } }}
+            variants={{ hidden: { opacity: 0, y: 40 }, show: { opacity: 1, y: 0, transition: { duration: 0.3, ease: 'easeOut' } } }}
           >
             <img src="/images/prod2.jpg" alt="Dye House" className={styles.our_production_img} />
             <h3 className={styles.our_production_title}>DYE HOUSE</h3>
@@ -264,7 +264,7 @@ const Home = () => {
           </motion.div>
           <motion.div
             className={styles.our_production_col}
-            variants={{ hidden: { opacity: 0, y: 40 }, show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' } } }}
+            variants={{ hidden: { opacity: 0, y: 40 }, show: { opacity: 1, y: 0, transition: { duration: 0.3, ease: 'easeOut' } } }}
           >
             <img src="/images/prod3.jpg" alt="Sewing Factory" className={styles.our_production_img} />
             <h3 className={styles.our_production_title}>SEWING FACTORY</h3>
@@ -278,7 +278,7 @@ const Home = () => {
       <motion.section className={styles.speial_items}
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: "easeOut", delay: 0.4 }}
+        transition={{ duration: 0.3, ease: "easeOut", delay: 0.4 }}
         viewport={{ once: true, amount: 0.2 }}>
         <div className={styles.new_items_header}>
           <h2 className={styles.new_items_title}>SPECIAL ITEMS</h2>
@@ -305,6 +305,7 @@ const Home = () => {
               const quantity = getQuantity(item.id);
               return (
                 <motion.div
+              
                   key={item.id}
                   className={styles.product_card}
                   variants={{
@@ -312,7 +313,7 @@ const Home = () => {
                     show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
                   }}
                 >
-                  <div className={styles.product_image} style={{ position: 'relative' }}>
+                  <div className={styles.product_image}   onClick={()=>navigate(`/item/${item.id}`)} style={{ position: 'relative' }}>
                     <img 
                       src={`/${item.image}`} 
                       alt={item.item_name}
@@ -382,7 +383,7 @@ const Home = () => {
       <motion.section className={styles.our_fabrics}
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: "easeOut", delay: 0.4 }}
+        transition={{ duration: 0.3, ease: "easeOut", delay: 0.4 }}
         viewport={{ once: true, amount: 0.2 }}>
           <img src="/images/fabrics.png" alt="Our Fabrics" />
           <div className={styles.our_fabrics_overlay}>
