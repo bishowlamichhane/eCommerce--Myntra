@@ -1,4 +1,3 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { GoogleAuthProvider } from "firebase/auth/web-extension";
@@ -15,7 +14,6 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_MEASUREMENT_ID,
 };
 
-// Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
@@ -24,7 +22,6 @@ export const googleProvider = new GoogleAuthProvider();
 
 const analytics = getAnalytics(app);
 
-// Add item to user's bag
 export const addToUserBag = async (userId, productData) => {
   try {
     const bagRef = collection(db, "users", userId, "bag");
@@ -39,7 +36,6 @@ export const addToUserBag = async (userId, productData) => {
   }
 };
 
-// Remove item from user's bag
 export const removeFromUserBag = async (userId, productId) => {
   try {
     const bagRef = collection(db, "users", userId, "bag");
@@ -58,7 +54,6 @@ export const removeFromUserBag = async (userId, productId) => {
   }
 };
 
-// Get user's bag items
 export const getUserBag = async (userId) => {
   try {
     const bagRef = collection(db, "users", userId, "bag");
@@ -84,7 +79,6 @@ export const addProduct = async (productData) => {
   }
 };
 
-// Create order in Firebase
 export const createOrder = async (userId, orderData) => {
   try {
     const orderRef = collection(db, "orders");
@@ -110,13 +104,11 @@ export const createOrder = async (userId, orderData) => {
   }
 };
 
-// Clear all items from user's bag
 export const clearUserBag = async (userId) => {
   try {
     const bagRef = collection(db, "users", userId, "bag");
     const querySnapshot = await getDocs(bagRef);
 
-    // Delete all bag items
     const deletePromises = querySnapshot.docs.map(doc => deleteDoc(doc.ref));
     await Promise.all(deletePromises);
 

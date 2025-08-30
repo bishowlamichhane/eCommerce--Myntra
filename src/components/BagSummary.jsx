@@ -16,19 +16,17 @@ const BagSummary = ({ bagItems = [], onOrderPlaced }) => {
 
   const handleProceedToCheckout = () => {
     if (!currentUser) {
-      return; // This should be handled by the parent component
+      return;
     }
 
     if (bagItems.length === 0) {
-      return; // This should be handled by the parent component
+      return;
     }
 
-    // Call the parent function to redirect to checkout
     if (onOrderPlaced) {
       onOrderPlaced();
     }
   };
-  // Calculate totals directly from bagItems which now contain all necessary information
   let totalItem = bagItems.reduce(
     (total, item) => total + (item.quantity || 0),
     0
@@ -50,7 +48,6 @@ const BagSummary = ({ bagItems = [], onOrderPlaced }) => {
 
   let finalPayment = totalMRP - totalDiscount + CONVENIENCE_FEES;
 
-  // Handle case where bag is empty
   if (bagItems.length === 0) {
     finalPayment = 0;
     totalItem = 0;

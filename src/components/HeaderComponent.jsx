@@ -33,7 +33,6 @@ const HeaderComponent = () => {
       const scrollingDown = currentScrollY > lastScrollY.current;
       const scrollAmount = Math.abs(currentScrollY - lastScrollY.current);
 
-      // Only trigger hide/show if scrolled more than 10px
       if (scrollAmount > 10) {
         setIsVisible(!scrollingDown);
         lastScrollY.current = currentScrollY;

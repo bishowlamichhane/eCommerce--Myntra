@@ -42,7 +42,6 @@ const Bag = () => {
   };
 
   const handleOrderPlaced = () => {
-    // Redirect to checkout page instead of handling order here
     navigate('/checkout');
   };
 

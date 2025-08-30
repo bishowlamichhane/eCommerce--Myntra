@@ -13,7 +13,6 @@ const HomeItem = ({ item }) => {
   const [elementFound, setElementFound] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
-  // Fetch bag items when component mounts or currentUser changes
   useEffect(() => {
     const fetchBagItems = async () => {
       if (currentUser) {
@@ -62,10 +61,8 @@ const HomeItem = ({ item }) => {
         }
       };
 
-      // Add to Firestore
       await addToUserBag(currentUser.uid, productData);
       
-      // Update local state
        setBagItems(prev => [...prev, { ...productData, id: Date.now() }]);
       setElementFound(true);
     } catch (error) {
@@ -81,10 +78,8 @@ const HomeItem = ({ item }) => {
     if (!currentUser) return;
 
     try {
-      // Remove from Firestore
       await removeFromUserBag(currentUser.uid, itemId);
       
-      // Update local state
       setBagItems(prev => prev.filter(item => item.productId !== itemId));
       setElementFound(false);
       setQuantity(1);

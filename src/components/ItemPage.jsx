@@ -16,11 +16,10 @@ const ItemPage = () => {
   const bagItems = useSelector((store) => store.bag) || [];
   const { currentUser } = useAuth();
 
-  console.log('ItemPage Render - bagItems:', bagItems, 'ID:', id); // Log 1
+  console.log('ItemPage Render - bagItems:', bagItems, 'ID:', id);
 
-  // Use a state variable to explicitly manage whether the item is in the bag
   const [isInBag, setIsInBag] = useState(false); 
-  const [quantity, setQuantity] = useState(1); // Default to 1, updated by useEffect
+  const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     const itemInBag = bagItems.find((bagItem) => bagItem.itemId === id);
@@ -28,9 +27,9 @@ const ItemPage = () => {
     if (itemInBag) {
       setQuantity(itemInBag.quantity);
     } else {
-      setQuantity(1); // Reset quantity if item is removed from bag or not found
+      setQuantity(1);
     }
-    console.log('useEffect - bagItems changed. isInBag:', isInBag, 'Quantity:', itemInBag?.quantity || 1); // Log 2
+    console.log('useEffect - bagItems changed. isInBag:', isInBag, 'Quantity:', itemInBag?.quantity || 1);
   }, [bagItems, id]);
 
   console.log(foundItem);
@@ -61,16 +60,13 @@ const ItemPage = () => {
         }
       };
 
-      // Add to Firestore
       await addToUserBag(currentUser.uid, productData);
 
-      // Update Redux store
       const itemToAdd = { itemId, quantity: finalQuantity };
       dispatch(bagAction.addToBag(itemToAdd));
-      console.log('handleAdded - Dispatched addToBag:', itemToAdd); // Log 3
+      console.log('handleAdded - Dispatched addToBag:', itemToAdd);
     } catch (error) {
       console.error("Error adding item to bag:", error);
-      // You might want to show an error message to the user here
     }
   };
 
@@ -78,14 +74,11 @@ const ItemPage = () => {
     if (!currentUser) return;
 
     try {
-      // Remove from Firestore
       await removeFromUserBag(currentUser.uid, itemId);
 
-      // Update Redux store
       dispatch(bagAction.removeFromBag(itemId));
     } catch (error) {
       console.error("Error removing item from bag:", error);
-      // You might want to show an error message to the user here
     }
   };
 

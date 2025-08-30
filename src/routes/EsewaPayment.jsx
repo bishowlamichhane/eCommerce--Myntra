@@ -12,7 +12,6 @@ export default function EsewaPayment() {
     const [paymentStatus, setPaymentStatus] = useState(null);
     const navigate = useNavigate()
     useEffect(() => {
-        // Check for payment status from URL parameters
         const status = searchParams.get('status');
         const method = searchParams.get('method');
 
@@ -20,7 +19,6 @@ export default function EsewaPayment() {
             setPaymentStatus(status);
 
             if (status === 'success') {
-                // You can implement toast notification here
                 console.log('Payment Successful! Your eSewa payment has been completed successfully.');
                 navigate('/')
             } else if (status === 'failed') {
@@ -30,7 +28,6 @@ export default function EsewaPayment() {
     }, [searchParams]);
 
     useEffect(() => {
-        // Set some default values for testing
         setAmount("1000");
         setProductName("Test Product");
         setTransactionId("test-" + Date.now());
@@ -42,7 +39,6 @@ export default function EsewaPayment() {
         setError(null);
 
         try {
-            // Call the Supabase Edge Function instead of Next.js API
             const { data: paymentData, error: supabaseError } = await supabase.functions.invoke('initiate-payment', {
                 body: {
                     method: "esewa",
@@ -113,7 +109,6 @@ export default function EsewaPayment() {
                     <h2 className="text-2xl font-bold text-gray-900 mb-2">eSewa Payment</h2>
                     <p className="text-gray-600 mb-6">Enter payment details for eSewa</p>
 
-                    {/* Payment Status Display */}
                     {paymentStatus && (
                         <div className="mb-4">
                             {paymentStatus === 'success' ? (

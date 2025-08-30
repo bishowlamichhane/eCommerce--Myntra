@@ -300,7 +300,6 @@
     box-shadow: 0 2px 8px rgba(40, 167, 69, 0.2) !important;
 }
 
-/* Responsive Design */
 @media (max-width: 1024px) {
     .checkoutContent {
         grid-template-columns: 1fr;

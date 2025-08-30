@@ -5,7 +5,7 @@ const toastSlice = createSlice({
     initialState: {
         message: "",
         isVisible: false,
-        type: "info" // 'success', 'error', 'warning', 'info'
+        type: "info"
     },
     reducers: {
         showToast: (state, action) => {

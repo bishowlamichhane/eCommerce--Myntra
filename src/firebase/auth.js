@@ -12,7 +12,6 @@ import {
   browserLocalPersistence,
 } from "firebase/auth"
 
-// Ensure persistence is set to LOCAL
 setPersistence(auth, browserLocalPersistence).catch((error) => {
   console.error("Firebase persistence error:", error)
 })

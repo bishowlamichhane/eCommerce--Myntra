@@ -1,6 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-//bag slice 
-
 
 const bagSlice = createSlice({
     name: "bag",

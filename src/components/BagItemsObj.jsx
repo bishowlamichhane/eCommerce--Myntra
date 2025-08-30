@@ -10,10 +10,8 @@ const BagItemsObj = ({ item, quantity, onItemRemoved }) => {
     if (!currentUser) return;
 
     try {
-      // Remove from Firestore
       await removeFromUserBag(currentUser.uid, itemId);
       
-      // Notify parent component to update the UI
       if (onItemRemoved) {
         onItemRemoved(itemId);
       }

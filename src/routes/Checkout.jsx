@@ -26,13 +26,11 @@ const Checkout = () => {
     country: 'Nepal'
   });
 
-  // Payment status handling
   const [productName, setProductName] = useState("XYZ");
   const [transactionId, setTransactionId] = useState("test-"+Date.now());
   const [paymentStatus, setPaymentStatus] = useState(null);
 
   useEffect(() => {
-    // Check for payment status from URL parameters
     const status = searchParams.get('status');
     const method = searchParams.get('method');
 
@@ -40,7 +38,6 @@ const Checkout = () => {
         setPaymentStatus(status);
 
         if (status === 'success') {
-            // Create order and clear bag after successful payment
             handlePaymentSuccess();
         } else if (status === 'failed') {
             showError('Payment Failed! Your eSewa payment was not completed. Please try again.');
@@ -48,7 +45,6 @@ const Checkout = () => {
     }
   }, [searchParams, navigate]);
 
-  // Handle successful payment by creating order and clearing bag
   const handlePaymentSuccess = async () => {
     try {
       const pendingOrder = localStorage.getItem('pendingOrder');
@@ -57,13 +53,10 @@ const Checkout = () => {
       if (pendingOrder && pendingOrderUserId && pendingOrderUserId === currentUser?.uid) {
         const orderData = JSON.parse(pendingOrder);
         
-        // Create order in Firebase
         const orderId = await createOrder(currentUser.uid, orderData);
         
-        // Clear the bag after successful order placement
         await clearUserBag(currentUser.uid);
         
-        // Clear pending order data
         localStorage.removeItem('pendingOrder');
         localStorage.removeItem('pendingOrderUserId');
         
@@ -89,7 +82,6 @@ const Checkout = () => {
   };
   
 
-  // Fetch bag items from Firestore
   useEffect(() => {
     const fetchBagItems = async () => {
       if (!currentUser) {
@@ -126,7 +118,6 @@ const Checkout = () => {
 
   const { totalItems, totalMRP, totalDiscount, finalAmount } = calculateTotals();
 
-  // Check if all required fields are filled
   const isFormValid = () => {
     return (
       formData.fullName.trim() !== '' &&
@@ -139,7 +130,6 @@ const Checkout = () => {
     );
   };
 
-  // Handle order placement with eSewa payment
   const handleOrder = async () => {
     if (!currentUser) {
       showWarning("Please login to place an order");
@@ -157,13 +147,12 @@ const Checkout = () => {
     }
 
     if (isPlacingOrder) {
-      return; // Prevent multiple clicks
+      return;
     }
 
     setIsPlacingOrder(true);
 
     try {
-      // Calculate order summary
       const totalItems = bagItems.reduce((total, item) => total + (item.quantity || 0), 0);
       const totalMRP = bagItems.reduce((total, item) => total + ((item.itemDetails?.original_price || item.original_price || 0) * (item.quantity || 1)), 0);
       const totalDiscount = bagItems.reduce((total, item) => {
@@ -193,7 +182,6 @@ const Checkout = () => {
       console.log('Payment Initiated! Redirecting to eSewa payment gateway');
       console.log('Payment data:', paymentData);
 
-      // Store order data in localStorage to create order after payment success
       const orderData = {
         items: bagItems.map(item => ({
           id: item.id,
@@ -262,7 +250,6 @@ const Checkout = () => {
     }
   };
 
-  // Show loading state
   if (loading) {
     return (
       <div className={styles.checkoutContainer}>
@@ -273,7 +260,6 @@ const Checkout = () => {
     );
   }
 
-  // Check if user is logged in
   if (!currentUser) {
     return (
       <div className={styles.checkoutContainer}>
@@ -284,7 +270,6 @@ const Checkout = () => {
     );
   }
 
-  // Check if bag is empty
   if (bagItems.length === 0) {
     return (
       <div className={styles.checkoutContainer}>
@@ -302,9 +287,7 @@ const Checkout = () => {
       </div>
       
       <div className={styles.checkoutContent}>
-        {/* Left Column - Forms */}
         <div className={styles.leftColumn}>
-          {/* Contact Information */}
           <div className={styles.formSection}>
             <h2>Contact Information</h2>
             <div className={styles.formRow}>
@@ -344,7 +327,6 @@ const Checkout = () => {
             </div>
           </div>
 
-          {/* Shipping Address */}
           <div className={styles.formSection}>
             <h2>Shipping Address</h2>
             <div className={styles.formGroup}>
@@ -409,12 +391,10 @@ const Checkout = () => {
           </div>
         </div>
 
-        {/* Right Column - Order Summary */}
         <div className={styles.rightColumn}>
           <div className={styles.orderSummary}>
             <h2>Order Summary</h2>
             
-            {/* Bag Items */}
             <div className={styles.bagItems}>
               <h3>Items ({totalItems})</h3>
               {bagItems.map((item, index) => (
@@ -443,7 +423,6 @@ const Checkout = () => {
               ))}
             </div>
 
-            {/* Price Breakdown */}
             <div className={styles.priceBreakdown}>
               <div className={styles.priceHeader}>PRICE DETAILS ({totalItems} Items)</div>
               <div className={styles.priceRow}>
@@ -465,7 +444,6 @@ const Checkout = () => {
               </div>
             </div>
 
-            {/* Pay Button */}
             <button 
               className={`${styles.payButton} ${!isFormValid() ? styles.payButtonDisabled : ''}`}
               disabled={!isFormValid() || isPlacingOrder}

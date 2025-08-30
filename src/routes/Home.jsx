@@ -22,7 +22,6 @@ const Home = () => {
         try {
           const items = await getUserBag(currentUser.uid);
           setBagItems(items);
-          // Set initial quantities for items in bag
           const qtyObj = {};
           items.forEach((bagItem) => {
             qtyObj[bagItem.productId] = bagItem.quantity;

@@ -17,13 +17,11 @@ export function AuthProvider({ children }) {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         try {
-          // Fetch additional user data from Firestore
           const userDocRef = doc(db, "users", user.uid);
           const userDocSnap = await getDoc(userDocRef);
           
           if (userDocSnap.exists()) {
             const userData = userDocSnap.data();
-            // Combine Firebase Auth data with Firestore data
             setCurrentUser({
               uid: user.uid,
               email: user.email,
@@ -34,7 +32,6 @@ export function AuthProvider({ children }) {
               createdAt: userData.createdAt,
             });
           } else {
-            // If no Firestore document, use just Firebase Auth data
             setCurrentUser({
               uid: user.uid,
               email: user.email,
@@ -46,7 +43,6 @@ export function AuthProvider({ children }) {
           }
         } catch (error) {
           console.error("Error fetching user data from Firestore:", error);
-          // Fallback to just Firebase Auth data
           setCurrentUser({
             uid: user.uid,
             email: user.email,
@@ -57,13 +53,11 @@ export function AuthProvider({ children }) {
           });
         }
       } else {
-        // User is signed out
         setCurrentUser(null);
       }
       setLoading(false);
     });
 
-    // Cleanup subscription on unmount
     return () => unsubscribe();
   }, []);
 

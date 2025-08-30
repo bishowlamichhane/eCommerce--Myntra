@@ -32,7 +32,6 @@ const Login = () => {
         const userCredential = await doSignInWithEmailAndPassword(email, password);
         const user = userCredential.user;
 
-        // Fetch user data from Firestore
         const userDocRef = doc(db, "users", user.uid);
         const userDocSnap = await getDoc(userDocRef);
 
@@ -43,13 +42,11 @@ const Login = () => {
             passwordRef.current.value = "";
             navigate("/");
           } else {
-            // Sign out if not a customer
             setShowCustomerError(true);
 
             await doSignOut();
           }
         } else {
-          // If user document doesn't exist, sign out (or handle as an error)
           setShowCustomerError(true);
 
           await doSignOut();

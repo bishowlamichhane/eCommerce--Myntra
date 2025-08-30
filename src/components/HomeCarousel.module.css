@@ -122,7 +122,6 @@
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
 }
 
-/* Navigation Buttons */
 .navButton {
     position: absolute;
     top: 50%;
@@ -161,7 +160,6 @@
     color: #000;
 }
 
-/* Dots Indicator */
 .dotsContainer {
     position: absolute;
     bottom: 30px;
@@ -192,7 +190,6 @@
     transform: scale(1.2);
 }
 
-/* Responsive Design */
 @media (max-width: 1200px) {
     .carouselContainer {
         width: 90%;

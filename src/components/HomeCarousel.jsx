@@ -86,7 +86,6 @@ const HomeCarousel = () => {
           }
         }}
       >
-        {/* All images pre-rendered in DOM for instant switching */}
         {carouselItems.map((item, index) => (
           <motion.div
             key={item.id}

@@ -15,7 +15,6 @@
     width: 400px;
     height: 100vh;
     background: rgba(80, 60, 40, 0.85);
-    /* brownish overlay */
     backdrop-filter: blur(8px);
     z-index: 1000;
     transition: opacity 0.3s;
@@ -113,7 +112,6 @@
     color: #ffe6b3;
 }
 
-/* Responsive Design */
 @media (max-width: 480px) {
     .sidemenu_backdrop {
         width: 100vw;

@@ -1,13 +1,11 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
-// CORS headers
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
   'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
 };
 
-// Types
 interface PaymentRequestData {
   amount: string;
   productName: string;
@@ -17,7 +15,6 @@ interface PaymentRequestData {
 
 type PaymentMethod = "esewa" | "khalti";
 
-// Generate eSewa signature using Deno's crypto API
 async function generateEsewaSignature(secretKey: string, message: string): Promise<string> {
   try {
     console.log('Generating signature for message:', message);
@@ -43,7 +40,6 @@ async function generateEsewaSignature(secretKey: string, message: string): Promi
     
     console.log('Raw signature length:', signatureArray.length);
     
-    // Convert to base64 - this is the standard format eSewa expects
     let base64Signature = '';
     for (let i = 0; i < signatureArray.length; i++) {
       base64Signature += String.fromCharCode(signatureArray[i]);
@@ -61,7 +57,6 @@ async function generateEsewaSignature(secretKey: string, message: string): Promi
 }
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response('ok', { 
       headers: corsHeaders,
@@ -95,7 +90,6 @@ serve(async (req) => {
       case "esewa": {
         console.log("Initiating eSewa payment");
         
-        // Use hardcoded test credentials
         const merchantCode = "EPAYTEST";
         const secretKey = "8gBm/:&EnhH.1/q";
         const baseUrl = Deno.env.get("PUBLIC_BASE_URL") || "http://localhost:5173";
@@ -107,10 +101,8 @@ serve(async (req) => {
           baseUrl: baseUrl
         });
         
-        // Generate transaction UUID
         const transactionUuid = `test-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
         
-        // Ensure amount is a valid number
         const numericAmount = parseFloat(amount);
         if (isNaN(numericAmount) || numericAmount <= 0) {
           throw new Error('Invalid amount value');
@@ -124,14 +116,14 @@ serve(async (req) => {
           product_code: merchantCode,
           product_service_charge: "0",
           product_delivery_charge: "0",
-          success_url:`https://e-commerce-myntra-omega.vercel.app/checkout?status=success&method=esewa`,
-          failure_url:`https://e-commerce-myntra-omega.vercel.app/checkout?status=failed&method=esewa` ,
+          success_url:`${baseUrl}/checkout?status=success&method=esewa`,
+          failure_url:`${baseUrl}/checkout?status=failed&method=esewa` ,
           signed_field_names: "total_amount,transaction_uuid,product_code",
         };
         
         console.log('eSewa config before signature:', esewaConfig);
         
-        // Generate signature for the signed fields
+
         const signatureString = `total_amount=${esewaConfig.total_amount},transaction_uuid=${esewaConfig.transaction_uuid},product_code=${esewaConfig.product_code}`;
         console.log('Signature string being generated:', signatureString);
         

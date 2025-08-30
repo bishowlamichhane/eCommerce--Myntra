@@ -17,7 +17,6 @@ const FetchItems = () => {
       try {
         dispatch(fetchAction.markFetchingStarted());
 
-        // This will search *all* `products` subcollections across Firestore
         const querySnapshot = await getDocs(collectionGroup(db, "products"));
         const itemsData = querySnapshot.docs.map((doc) => ({
           id: doc.id,

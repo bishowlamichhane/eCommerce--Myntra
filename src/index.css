@@ -26,7 +26,6 @@ body {
   left: 20px;
 }
 
-/* Main section */
 .banner_container {
   margin: 40px 0;
 }
@@ -433,7 +432,6 @@ a.action_container:link {
 
 .item-page-container {}
 
-/* Responsive styles */
 @media screen and (max-width: 1024px) {
   .items-container {
     width: 90%;
@@ -522,9 +520,7 @@ a.action_container:link {
     padding: 10px;
   }
 
-  .item-left-part {
-    /* No change needed */
-  }
+  .item-left-part {}
 
   .bag-item-img {
     width: 80px;
@@ -537,9 +533,7 @@ a.action_container:link {
     align-items: stretch;
   }
 
-  .item-right-part {
-    /* No change needed */
-  }
+  .item-right-part {}
 
   .remove-from-cart {
     font-size: 16px;
@@ -552,7 +546,6 @@ a.action_container:link {
   }
 }
 
-/* Medium mobile screens */
 @media screen and (max-width: 480px) and (min-width: 361px) {
   .item-container {
     width: 100%;
@@ -681,15 +674,12 @@ a.action_container:link {
     flex-direction: column;
   }
 
-  .item-left-part {
-    /* No change needed */
-  }
+  .item-left-part {}
 
   .item-right-part {
     max-width: 100%;
   }
 
-  /* Bag page styles for mobile */
   .bag-page {
     width: 98%;
     margin: 0 auto;
@@ -758,7 +748,6 @@ a.action_container:link {
   }
 }
 
-/* Extra small screens (phones in portrait) */
 @media screen and (max-width: 360px) {
   .item-container {
     width: 100%;
@@ -835,7 +824,6 @@ a.action_container:link {
     margin-top: 6px;
   }
 
-  /* Bag page extra small adjustments */
   .bag-page {
     width: 100%;
     padding: 4px;
@@ -881,7 +869,6 @@ a.action_container:link {
   }
 }
 
-/* Item page specific styles */
 .item-page-container {
   padding: 20px;
   max-width: 1000px;
@@ -910,13 +897,11 @@ a.action_container:link {
   border-radius: 8px;
 }
 
-/* Styles for the main item display */
 .items-container,
 .category-items {
   width: 80%;
 }
 
-/* Item button and quantity controls area */
 .action-area {
   margin-top: 8px;
   width: 100%;
@@ -956,7 +941,6 @@ a.action_container:link {
   background-color: darkred;
 }
 
-/* Container for quantity controls when item is NOT in bag */
 .quantity-controls-container {
   display: flex;
   align-items: center;
@@ -996,19 +980,15 @@ a.action_container:link {
 }
 
 .quantity-input {
-  /* Allow input to take available space */
   height: 36px;
   border: none;
-  /* Remove input borders */
   text-align: center;
   font-size: 16px;
   color: #3e4152;
   -moz-appearance: textfield;
   padding: 0 5px;
   width: 40px;
-  /* Set a fixed width */
   flex-grow: 0;
-  /* Prevent it from growing */
 }
 
 .quantity-input::-webkit-outer-spin-button,
@@ -1017,15 +997,11 @@ a.action_container:link {
   margin: 0;
 }
 
-/* Remove or override incorrect styles added previously */
 .action-button-container,
 .action-button-container button,
 .added-to-bag-controls,
 .quantity-controls button,
-.quantity-controls input {
-  /* Ensure these styles don't interfere */
-  /* It's safer to define the correct styles and let them override */
-}
+.quantity-controls input {}
 
 input,
 button {
@@ -1045,7 +1021,6 @@ a {
   font-size: 13px;
 }
 
-/* --- Modern Footer Styles --- */
 .footer-modern {
   padding: 0px 100px;
   margin-top: 60px;
@@ -1427,6 +1402,7 @@ a {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }

@@ -15,7 +15,6 @@ const App = () => {
   const items = useSelector((store) => store.items);
 
   useEffect(() => {
-    // Set isVisible to true when component mounts
     setIsVisible(true);
   }, []);
 
